@@ -4,19 +4,16 @@
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `neural_bridge` to your list of dependencies in `mix.exs`:
-
 ```elixir
 def deps do
   [
-    {:neural_bridge, "~> 0.1.0"}
+    {:neural_bridge, git: "https://github.com/lorenzosinisi/neural_bridge"}
   ]
 end
 ```
 
 
-## Examples
+## Examples and usage
 
 ### Generic inferred knowledge
 
@@ -115,7 +112,10 @@ end
 ```
 
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/neural_bridge](https://hexdocs.pm/neural_bridge).
+This library is just glue for two projects [Retex](https://github.com/lorenzosinisi/retex)
+and the DSL [Sanskrit](https://github.com/lorenzosinisi/sanskrit). Retex and Sanskrit can
+be put together to form an expert system in Elixir as shown in the examples above.
+
+
+If you have any comment or question feel free to open an issue here
 

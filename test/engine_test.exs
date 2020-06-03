@@ -1,10 +1,9 @@
 defmodule NeuralBridge.EngineTest do
   use ExUnit.Case
-  alias Retex.{RuleEngine, Wme}
+  alias Retex.Wme
   import ExUnit.CaptureLog
   alias NeuralBridge.{Engine}
   alias NeuralBridge.Rule
-  alias RuleEngine, as: Engine
 
   test "can be started" do
     assert Engine.new("test")

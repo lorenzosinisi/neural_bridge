@@ -1,4 +1,4 @@
-defmodule Retex.RuleEngine do
+defmodule NeuralBridge.Engine do
   @moduledoc """
   Handles a rule engine single session
 
@@ -20,7 +20,7 @@ defmodule Retex.RuleEngine do
 
   @spec new(String.t()) :: t()
   def new(id) when is_binary(id),
-    do: %RuleEngine{id: id, rule_engine: Retex.new()}
+    do: %Engine{id: id, rule_engine: Retex.new()}
 
   @doc "Merge the pre-existing rules with the new set of rules provided"
   @spec add_rules(t(), list()) :: t()

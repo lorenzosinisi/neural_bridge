@@ -18,6 +18,8 @@ end
 
 ## Examples
 
+# Generic inferred knowledge
+
 ```elixir
     engine = Engine.new("test")
 

@@ -2,6 +2,10 @@
 
 **A way to mimic human decision making, incredibily fast - An expert system built in Elixir** 
 
+"Soon after the dawn of modern computers in the late 1940s – early 1950s, researchers started realizing the immense potential these machines had for modern society. One of the first challenges was to make such machine capable of “thinking” like humans. In particular, making these machines capable of making important decisions the way humans do. The medical / healthcare field presented the tantalizing challenge to enable these machines to make medical diagnostic decisions.
+
+Thus, in the late 1950s, right after the information age had fully arrived, researchers started experimenting with the prospect of using computer technology to emulate human decision-making. For example, biomedical researchers started creating computer-aided systems for diagnostic applications in medicine and biology. These early diagnostic systems used patients’ symptoms and laboratory test results as inputs to generate a diagnostic outcome. These systems were often described as the early forms of expert systems. However, researchers had realized that there were significant limitations when using traditional methods such as flow-charts statistical pattern-matching, or probability theory." - [Wikipedia](https://en.wikipedia.org/wiki/Expert_system)
+
 ## Installation
 
 ```elixir
@@ -121,3 +125,9 @@ be put together to form an expert system in Elixir as shown in the examples abov
 
 If you have any comment or question feel free to open an issue here
 
+
+
+References: 
+- [Rete algorithm](https://en.wikipedia.org/wiki/Rete_algorithm)
+- [Expert system](https://en.wikipedia.org/wiki/Expert_system#:~:text=In%20artificial%20intelligence%2C%20an%20expert,than%20through%20conventional%20procedural%20code.)
+- 

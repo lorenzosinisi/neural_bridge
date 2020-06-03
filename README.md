@@ -127,7 +127,7 @@ If you have any comment or question feel free to open an issue here
 
 
 
-References: 
+#### References: 
 - [Rete algorithm](https://en.wikipedia.org/wiki/Rete_algorithm)
 - [Expert system](https://en.wikipedia.org/wiki/Expert_system#:~:text=In%20artificial%20intelligence%2C%20an%20expert,than%20through%20conventional%20procedural%20code.)
-- 
+- [Forgy's paper](http://www.csl.sri.com/users/mwfong/Technical/RETE%20Match%20Algorithm%20-%20Forgy%20OCR.pdf)

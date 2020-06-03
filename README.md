@@ -46,7 +46,7 @@ end
     ]
 
     engine = Engine.add_rules(engine, rules)
-    engine = Engine.add_facts(engine, Wme.new("Person", "name", "bob"))
+    engine = Engine.add_facts(engine, "Person's name is \"bob\"")
     rule = List.first(engine.rule_engine.agenda)
     engine = Engine.apply_rule(engine, rule)
 
@@ -94,9 +94,9 @@ end
     has_name = Wme.new("Patient", "name", "Aylon")
     has_weaknes = Wme.new("Patient", "generic_weakness", "Yes")
 
-    engine = Engine.add_facts(engine, has_fever)
-    engine = Engine.add_facts(engine, has_name)
-    engine = Engine.add_facts(engine, has_weaknes)
+    engine = Engine.add_facts(engine, "Person's fever is 39")
+    engine = Engine.add_facts(engine, "Person's name is \"Aylon\"")
+    engine = Engine.add_facts(engine, "Person's generic_weakness is \"Yes\"")
     ## contains Patient's diagnnosis
     [
       %_{

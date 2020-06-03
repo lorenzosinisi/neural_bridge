@@ -10,6 +10,57 @@ defmodule NeuralBridge.EngineTest do
     assert Engine.new("test")
   end
 
+  test "can abstract medical knowledge" do
+    engine = Engine.new("doctor_AI")
+
+    rules = [
+      Rule.new(
+        id: 1,
+        given: """
+        Patient's fever is greater 38.5
+        Patient's name is equal $name
+        Patient's generic_weakness is equal "Yes"
+        """,
+        then: """
+        Patient's diagnosis is "flu"
+        """
+      ),
+      Rule.new(
+        id: 2,
+        given: """
+        Patient's fevel is lesser 38.5
+        Patient's name is equal $name
+        Patient's generic_weakness is equal "No"
+        """,
+        then: """
+        Patient's diagnosis is "all good"
+        """
+      )
+    ]
+
+    engine = Engine.add_rules(engine, rules)
+    has_fever = Wme.new("Patient", "fever", 39)
+    has_name = Wme.new("Patient", "name", "Aylon")
+    has_weaknes = Wme.new("Patient", "generic_weakness", "Yes")
+
+    engine = Engine.add_facts(engine, has_fever)
+    engine = Engine.add_facts(engine, has_name)
+    engine = Engine.add_facts(engine, has_weaknes)
+    ## contains Patient's diagnnosis
+    [
+      %_{
+        action: [
+          %Retex.Wme{
+            identifier: "Patient",
+            attribute: "diagnosis",
+            value: "flu"
+          }
+        ],
+        bindings: %{"$name" => "Aylon"}
+      }
+    ] = engine.rule_engine.agenda
+  end
+
   test "rules can be added, and their conclusion can be a function call" do
     engine = Engine.new("test")
 

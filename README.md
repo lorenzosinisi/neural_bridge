@@ -58,7 +58,6 @@ end
         Engine.apply_rule(engine, pnode)
         end)
     end # will log %{"$name" => "bob"}
-  end
 
 ```
 

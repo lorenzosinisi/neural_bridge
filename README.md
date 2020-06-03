@@ -46,19 +46,14 @@ end
     ]
 
     engine = Engine.add_rules(engine, rules)
-    assert Enum.empty?(engine.rule_engine.agenda)
-
     engine = Engine.add_facts(engine, Wme.new("Person", "name", "bob"))
-
     rule = List.first(engine.rule_engine.agenda)
-
     engine = Engine.apply_rule(engine, rule)
 
-    assert capture_log(fn ->
-             Enum.each(engine.rule_engine.agenda, fn pnode ->
-               Engine.apply_rule(engine, pnode)
-             end)
-           end) =~ inspect(%{"$name" => "bob"})
+    Enum.each(engine.rule_engine.agenda, fn pnode ->
+        Engine.apply_rule(engine, pnode)
+        end)
+    end # will log %{"$name" => "bob"}
   end
 
 ```

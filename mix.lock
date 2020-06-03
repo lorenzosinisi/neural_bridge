@@ -1,0 +1,7 @@
+%{
+  "combine": {:hex, :combine, "0.10.0", "eff8224eeb56498a2af13011d142c5e7997a80c8f5b97c499f84c841032e429f", [:mix], [], "hexpm", "1b1dbc1790073076580d0d1d64e42eae2366583e7aecd455d1215b0d16f2451b"},
+  "libgraph": {:hex, :libgraph, "0.13.3", "20732b7bafb933dcf7351c479e03076ebd14a85fd3202c67a1c197f4f7c2466b", [:mix], [], "hexpm", "78f2576eef615440b46f10060b1de1c86640441422832052686df53dc3c148c6"},
+  "retex": {:git, "https://github.com/lorenzosinisi/retex", "ea566d473b2a94d63afd70ab35d2c58be883b27c", []},
+  "sanskrit": {:git, "https://github.com/lorenzosinisi/sanskrit", "053b0e30da4e8fc70ef0b94d6eade152396beb83", []},
+  "uuid_tools": {:hex, :uuid_tools, "0.1.1", "e94e05551dcfd085a127c11112b0e6d24a98963659bf2f16615745c492e00e38", [:mix], [], "hexpm", "eafa199917316fece589c8768427c0bac6d6959a523482d130f1997a674c0da4"},
+}

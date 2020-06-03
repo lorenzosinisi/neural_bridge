@@ -44,27 +44,12 @@ defmodule NeuralBridge.EngineTest do
 
     rule = List.first(engine.rule_engine.agenda)
 
-    assert Enum.empty?(engine.rules_fired)
-
-    assert %Retex.Node.PNode{
-             action: [
-               %Retex.Wme{
-                 attribute: "age",
-                 id: _,
-                 identifier: "Person",
-                 timestamp: nil,
-                 value: 23
-               }
-             ]
-           } = rule
-
-    assert engine = Engine.apply_rule(engine, rule)
-
-    refute Enum.empty?(engine.rules_fired)
-    assert fun = Enum.find(engine.rule_engine.agenda, fn pnode -> is_function(pnode.action) end)
+    engine = Engine.apply_rule(engine, rule)
 
     assert capture_log(fn ->
-             Engine.apply_rule(engine, fun)
+             Enum.each(engine.rule_engine.agenda, fn pnode ->
+               Engine.apply_rule(engine, pnode)
+             end)
            end) =~ inspect(%{"$name" => "bob"})
   end
 

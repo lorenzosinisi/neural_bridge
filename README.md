@@ -80,7 +80,7 @@ end
         Rule.new(
           id: 2,
           given: """
-          Patient's fevel is lesser 38.5
+          Patient's fever is lesser 38.5
           Patient's name is equal $name
           Patient's generic_weakness is equal "No"
           """,

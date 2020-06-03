@@ -1,6 +1,6 @@
 # NeuralBridge
 
-**A way to mimic human knowledge and decision making**
+**A way to mimic human knowledge and decision making - An expert system built in Elixir** 
 
 ## Installation
 

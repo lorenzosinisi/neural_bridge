@@ -39,13 +39,9 @@ defmodule NeuralBridge.EngineTest do
     ]
 
     engine = Engine.add_rules(engine, rules)
-    has_fever = Wme.new("Patient", "fever", 39)
-    has_name = Wme.new("Patient", "name", "Aylon")
-    has_weaknes = Wme.new("Patient", "generic_weakness", "Yes")
-
-    engine = Engine.add_facts(engine, has_fever)
-    engine = Engine.add_facts(engine, has_name)
-    engine = Engine.add_facts(engine, has_weaknes)
+    engine = Engine.add_facts(engine, "Patient's fever is 39")
+    engine = Engine.add_facts(engine, "Patient's name is \"Aylon\"")
+    engine = Engine.add_facts(engine, "Patient's generic_weakness is \"Yes\"")
     ## contains Patient's diagnnosis
     [
       %_{

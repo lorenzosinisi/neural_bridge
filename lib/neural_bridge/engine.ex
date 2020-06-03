@@ -23,24 +23,25 @@ defmodule Retex.RuleEngine do
     do: %RuleEngine{id: id, rule_engine: Retex.new()}
 
   @doc "Merge the pre-existing rules with the new set of rules provided"
-  @spec add_rules(t(), list(rule)) :: t()
-  def add_rules(session = %__MODULE__{rule_engine: rule_engine}, rules) when is_list(rules) do
+  @spec add_rules(t(), list()) :: t()
+  def add_rules(%__MODULE__{rule_engine: rule_engine} = session, rules) when is_list(rules) do
     %{session | rule_engine: Enum.reduce(rules, rule_engine, &Retex.add_production(&2, &1))}
   end
 
-  @doc "Return the reason why a rule would be activated"
-  @spec why(t(), map()) :: Retex.Why.t()
-  def why(%__MODULE__{rule_engine: rule_engine}, node) do
-    Retex.Why.explain(rule_engine, node)
+  @doc "add facts to the rule engine and triggers any other consequent rule execution before returing the state"
+  @spec add_facts(t(), list(Retex.Wme.t()) | binary()) :: t()
+  def add_facts(session = %__MODULE__{rule_engine: rule_engine}, facts) when is_binary(facts) do
+    ast_facts = NeuralBridge.SanskritInterpreter.to_production!(facts)
+    new_rule_engine = Enum.reduce(ast_facts, rule_engine, &Retex.add_wme(&2, &1))
+    %{session | rule_engine: new_rule_engine}
   end
 
-  @doc "add facts to the rule engine and triggers any other consequent rule execution before returing the state"
-  @spec add_facts(t(), list(Retex.Wme.t())) :: t()
   def add_facts(session = %__MODULE__{rule_engine: rule_engine}, facts) do
     new_rule_engine = facts |> List.wrap() |> Enum.reduce(rule_engine, &Retex.add_wme(&2, &1))
     %{session | rule_engine: new_rule_engine}
   end
 
+  @spec apply_rule(t(), map()) :: t()
   def apply_rule(
         session = %__MODULE__{rules_fired: rules_fired},
         rule = %{action: function, bindings: bindings}

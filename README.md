@@ -18,6 +18,7 @@ end
 ### Generic inferred knowledge
 
 ```elixir
+    alias NeuralBridge.{Engine, Rule}
     engine = Engine.new("test")
 
     rules = [
@@ -60,6 +61,7 @@ end
 ### Medical diagnosis
 
 ```elixir
+    alias NeuralBridge.{Engine, Rule}
     engine = Engine.new("doctor_AI")
 
     rules = [

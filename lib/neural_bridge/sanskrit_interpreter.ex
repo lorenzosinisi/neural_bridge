@@ -26,8 +26,8 @@ defmodule NeuralBridge.SanskritInterpreter do
     filter(type, kind, value)
   end
 
-  defp do_interpret({:unexistant_attribute, type, attr}) do
-    unexistant_attribute(type, attr)
+  defp do_interpret({:not_existing_attribute, type, attr}) do
+    not_existing_attribute(type, attr)
   end
 
   defp do_interpret({:negation, variable, type}) do

@@ -45,19 +45,19 @@ defmodule NeuralBridge.EngineTest do
       Patient's generic_weakness is "Yes"
       """)
 
-    ## contains Patient's diagnnosis
-    [
-      %_{
-        action: [
-          %Retex.Wme{
-            identifier: "Patient",
-            attribute: "diagnosis",
-            value: "flu"
-          }
-        ],
-        bindings: %{"$name" => "Aylon"}
-      }
-    ] = engine.rule_engine.agenda
+    ## contains Patient's diagnosis
+    assert [
+             %_{
+               action: [
+                 %Retex.Wme{
+                   identifier: "Patient",
+                   attribute: "diagnosis",
+                   value: "flu"
+                 }
+               ],
+               bindings: %{"$name" => "Aylon"}
+             }
+           ] = engine.rule_engine.agenda
   end
 
   test "rules can be added, and their conclusion can be a function call" do
@@ -139,6 +139,8 @@ defmodule NeuralBridge.EngineTest do
              ]
            } = rule
 
-    assert engine = Engine.apply_rule(engine, rule)
+    assert %NeuralBridge.Engine{rules_fired: rules_fired} = Engine.apply_rule(engine, rule)
+
+    assert Enum.count(rules_fired) == 1
   end
 end

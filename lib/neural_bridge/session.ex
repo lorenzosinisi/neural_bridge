@@ -5,6 +5,10 @@ defmodule NeuralBridge.Session do
   require Logger
   alias __MODULE__
 
+  defmodule Error do
+    defexception [:message]
+  end
+
   defmodule Solution do
     @moduledoc false
     defstruct text: "", bindings: %{}
@@ -16,6 +20,7 @@ defmodule NeuralBridge.Session do
             name: nil,
             solution: [],
             inferred_facts: [],
+            errors: [],
             functions_mod: NeuralBridge.DefinedFunctions
 
   @type t :: %__MODULE__{rule_engine: any(), id: String.t(), rules_fired: list(rule)}
@@ -28,8 +33,25 @@ defmodule NeuralBridge.Session do
   @spec add_rules(t(), list(rule)) :: t()
   def add_rules(session = %__MODULE__{rule_engine: rule_engine}, rules)
       when is_list(rules) do
-    rule_engine = Enum.reduce(rules, rule_engine, &Retex.add_production(&2, &1))
+    validate_rules(rules)
+    rule_engine = Enum.reduce(rules, rule_engine, &add_production(&2, &1))
     %{session | rule_engine: rule_engine}
+  end
+
+  defp validate_rules(rules) do
+    Enum.map(rules, fn rule ->
+      case rule do
+        {:error, error} ->
+          raise Error, message: error
+
+        any ->
+          any
+      end
+    end)
+  end
+
+  defp add_production(engine, rule) do
+    Retex.add_production(engine, rule)
   end
 
   @doc "Return the reason why a rule would be activated"

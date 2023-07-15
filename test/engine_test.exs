@@ -8,10 +8,10 @@ defmodule NeuralBridge.SessionTest do
   end
 
   test "can use inferred rules" do
-    engine = Engine.new("doctor_AI")
+    session = Session.new("doctor_AI")
 
-    engine =
-      Engine.add_rules(engine, [
+    session =
+      Session.add_rules(session, [
         Rule.new(
           id: 1,
           given: """
@@ -43,17 +43,14 @@ defmodule NeuralBridge.SessionTest do
         )
       ])
 
-    engine =
-      Engine.add_facts(engine, """
+    session =
+      Session.add_facts(session, """
       Patient's fever is 39
       Patient's name is "Aylon"
       Patient's generic_weakness is "Yes"
       """)
 
-    engine =
-      Enum.reduce(engine.rule_engine.agenda, engine, fn pnode, network ->
-        Engine.apply_rule(network, pnode)
-      end)
+    session = Session.apply_rules(session)
 
     ## contains Patient's diagnosis
     assert [
@@ -87,14 +84,14 @@ defmodule NeuralBridge.SessionTest do
                ],
                bindings: %{"$name" => "Aylon"}
              }
-           ] = engine.rule_engine.agenda
+           ] = session.rule_engine.agenda
   end
 
   test "can abstract medical knowledge" do
-    engine = Engine.new("doctor_AI")
+    session = Session.new("doctor_AI")
 
-    engine =
-      Engine.add_rules(engine, [
+    session =
+      Session.add_rules(session, [
         Rule.new(
           id: 1,
           given: """
@@ -119,8 +116,8 @@ defmodule NeuralBridge.SessionTest do
         )
       ])
 
-    engine =
-      Engine.add_facts(engine, """
+    session =
+      Session.add_facts(session, """
       Patient's fever is 39
       Patient's name is "Aylon"
       Patient's generic_weakness is "Yes"
@@ -138,7 +135,7 @@ defmodule NeuralBridge.SessionTest do
                ],
                bindings: %{"$name" => "Aylon"}
              }
-           ] = engine.rule_engine.agenda
+           ] = session.rule_engine.agenda
   end
 
   test "can calculate the net taxaction in the UK" do

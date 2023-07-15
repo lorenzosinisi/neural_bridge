@@ -1,4 +1,5 @@
 defmodule NeuralBridge.Rule do
+  @moduledoc false
   import NeuralBridge.SanskritInterpreter
   defstruct [:id, :given, :then]
 

@@ -1,4 +1,7 @@
 defmodule NeuralBridge.SanskritInterpreter do
+  @moduledoc """
+  A local DSL interpreter for the Elixir https://github.com/lorenzosinisi/sanskrit
+  """
   import Retex.Facts
 
   @spec to_production(binary()) :: {:ok, list(Retex.Fact.t())} | {:error, any()}
@@ -15,7 +18,10 @@ defmodule NeuralBridge.SanskritInterpreter do
   end
 
   defp parse(str) do
-    Sanskrit.parse(str)
+    case Sanskrit.parse(str) do
+      {:ok, _} = result -> result
+      {:error, error} -> {:error, {str, error}}
+    end
   end
 
   defp interpret(ast) when is_list(ast) do
@@ -26,8 +32,8 @@ defmodule NeuralBridge.SanskritInterpreter do
     filter(type, kind, value)
   end
 
-  defp do_interpret({:not_existing_attribute, type, attr}) do
-    not_existing_attribute(type, attr)
+  defp do_interpret({:fun, variable, function_name, bindings}) do
+    NeuralBridge.Function.new(variable, function_name, bindings)
   end
 
   defp do_interpret({:negation, variable, type}) do

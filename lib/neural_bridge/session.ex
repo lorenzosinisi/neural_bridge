@@ -14,6 +14,8 @@ defmodule NeuralBridge.Session do
     defstruct text: "", bindings: %{}
   end
 
+  @defined_functions Application.compile_env!(:neural_bridge, :defined_functions)
+
   defstruct rule_engine: nil,
             id: nil,
             rules_fired: [],
@@ -21,7 +23,7 @@ defmodule NeuralBridge.Session do
             solution: [],
             inferred_facts: [],
             errors: [],
-            functions_mod: NeuralBridge.DefinedFunctions
+            functions_mod: @defined_functions
 
   @type t :: %__MODULE__{rule_engine: any(), id: String.t(), rules_fired: list(rule)}
   @type rule :: %{id: String.t(), given: Retex.Facts.t(), then: list(Retex.Facts.t() | any())}

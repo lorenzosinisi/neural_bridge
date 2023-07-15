@@ -211,11 +211,9 @@ We have now done inference and found an applicable rule. All we need to do now i
 Now imagine adding more and more complex rules and following the same strategy to find activable production nodes. The conditions will all be joined by a `Join` (and) node
 and will point to a production.
 
-
 ## How does the rule application work?
 
 Each time you insert a fact (be it by inference from a rule or a new standalone fact), the agenda might grow or shrink and produce new applicable rules. Each rule will then be applied until each of them has been applied once for each matching fact.
-
 
 ## What kind of syntax can I use in the given of a rule?
 
@@ -230,7 +228,6 @@ In the given of a rule you can only use comparison statements such as:
    Dog's age is unknown
 ```
 
-
 And in a given of a rule you can use insertion statements that translate to WMEs and functions:
 
 ```
@@ -243,7 +240,6 @@ And in a given of a rule you can use insertion statements that translate to WMEs
    Lorenzo's second_surname is $second_surname
 ```
 
-
 ## Installation
 
 ```elixir
@@ -254,6 +250,44 @@ def deps do
 end
 ```
 
+## Configuration
+
+If you want custom defined functions for your "let" statements in your rules you can define a module taking `NeuralBridge.DefinedFunctions` as example.
+
+```elixir
+config :neural_bridge, defined_functions: NeuralBridge.DefinedFunctions
+```
+
+There is no limit at what you can do with custom defined functions. Say you want to call an API endpoint when a rule is applied you could do the following:
+
+```sanskrit
+# in the "then" of a rule use something like:
+let $api_response = call_api($some_user_id)
+```
+
+And then define and config a custom module like:
+
+```elixir
+defmodule NeuralBridge.MyDefinedFunctions do
+  @behaviour NeuralBridge.FunctionBehaviour
+
+  @impl true
+  def call("fake_user_api", [user_id]) do
+    response = Req.get("www.users.com", %{id: user_id})
+    case response.status_code do
+      200 ->
+        response.body
+      _ ->
+        raise "API request failed with status code #{response.status_code}"
+    end
+  end
+
+  @impl true
+  def call(name, args) do
+    raise "Undefined function #{name} with args #{inspect(args)}"
+  end
+end
+```
 
 ## Examples and usage
 
@@ -316,9 +350,9 @@ NeuralBridge.Session.new("uk")
 
 In this example, the rules calculate the discount to be applied to a customer based on the number of items they have bought in a month. The discount percentages are determined as follows:
 
-* If the customer has bought 5 items, the discount percentage is set to 20%.
-* If the customer has bought less than 2 items, the discount percentage is set to 0%.
-* If the customer has bought exactly 3 items, the discount percentage is set to 10%.
+- If the customer has bought 5 items, the discount percentage is set to 20%.
+- If the customer has bought less than 2 items, the discount percentage is set to 0%.
+- If the customer has bought exactly 3 items, the discount percentage is set to 10%.
 
 ```elixir
 rules = [
@@ -455,18 +489,14 @@ SupportTicket's id is "123AB_ID"
   |> Map.fetch!(:inferred_facts)
 ```
 
-
-
 This library is just glue for two projects [Retex](https://github.com/lorenzosinisi/retex)
 and the DSL [Sanskrit](https://github.com/lorenzosinisi/sanskrit). Retex and Sanskrit can
 be put together to form an expert system in Elixir as shown in the examples above.
 
-
 If you have any comment or question feel free to open an issue here
 
-
-
 #### References:
+
 - [Rete algorithm](https://en.wikipedia.org/wiki/Rete_algorithm)
 - [Expert system](https://en.wikipedia.org/wiki/Expert_system#:~:text=In%20artificial%20intelligence%2C%20an%20expert,than%20through%20conventional%20procedural%20code.)
 - [Forgy's paper](http://www.csl.sri.com/users/mwfong/Technical/RETE%20Match%20Algorithm%20-%20Forgy%20OCR.pdf)

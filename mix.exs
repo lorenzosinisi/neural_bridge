@@ -24,15 +24,6 @@ defmodule NeuralBridge.MixProject do
     """
   end
 
-  defp package do
-    [
-      files: ["lib", "mix.exs", "README.md", "LICENSE"],
-      maintainers: ["Lorenzo Sinisi"],
-      licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/lorenzosinisi/retex"}
-    ]
-  end
-
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
@@ -54,7 +45,8 @@ defmodule NeuralBridge.MixProject do
     [
       {:sanskrit, "~> 0.1.8"},
       {:retex, "~> 0.1.9"},
-      {:decimal, "~> 2.0"}
+      {:decimal, "~> 2.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 end

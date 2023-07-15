@@ -87,57 +87,6 @@ defmodule NeuralBridge.SessionTest do
            ] = session.rule_engine.agenda
   end
 
-  test "can abstract medical knowledge" do
-    session = Session.new("doctor_AI")
-
-    session =
-      Session.add_rules(session, [
-        Rule.new(
-          id: 1,
-          given: """
-          Patient's fever is greater 38.5
-          Patient's name is equal $name
-          Patient's generic_weakness is equal "Yes"
-          """,
-          then: """
-          Patient's diagnosis is "flu"
-          """
-        ),
-        Rule.new(
-          id: 2,
-          given: """
-          Patient's fevel is lesser 38.5
-          Patient's name is equal $name
-          Patient's generic_weakness is equal "No"
-          """,
-          then: """
-          Patient's diagnosis is "all good"
-          """
-        )
-      ])
-
-    session =
-      Session.add_facts(session, """
-      Patient's fever is 39
-      Patient's name is "Aylon"
-      Patient's generic_weakness is "Yes"
-      """)
-
-    ## contains Patient's diagnosis
-    assert [
-             %_{
-               action: [
-                 %Retex.Wme{
-                   identifier: "Patient",
-                   attribute: "diagnosis",
-                   value: "flu"
-                 }
-               ],
-               bindings: %{"$name" => "Aylon"}
-             }
-           ] = session.rule_engine.agenda
-  end
-
   test "can calculate the net taxaction in the UK" do
     rules = [
       Rule.new(

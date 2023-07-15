@@ -257,102 +257,204 @@ end
 
 ## Examples and usage
 
-### Generic inferred knowledge
+# Rule engine in Elixir - Rete
 
 ```elixir
-    alias NeuralBridge.{Engine, Rule}
-    engine = Engine.new("test")
-
-    rules = [
-      Rule.new(
-        id: 1,
-        given: """
-        Person's name is equal "bob"
-        """,
-        then: """
-        Person's age is 23
-        """
-      ),
-      Rule.new(
-        id: 2,
-        given: """
-        Person's name is equal $name
-        Person's age is equal 23
-        """,
-        then: fn production ->
-          require Logger
-          bindings = Map.get(production, :bindings)
-          Logger.info(inspect(bindings))
-        end
-      )
-    ]
-
-    engine = Session.add_rules(engine, rules)
-    engine = Session.add_facts(engine, "Person's name is \"bob\"")
-    rule = List.first(engine.rule_engine.agenda)
-    engine = Session.apply_rule(engine, rule)
-
-    Enum.each(engine.rule_engine.agenda, fn pnode ->
-        Session.apply_rule(engine, pnode)
-        end)
-    end # will log %{"$name" => "bob"}
-
+Mix.install([
+  {:neural_bridge, git: "https://github.com/lorenzosinisi/neural_bridge"}
+])
 ```
 
-### Medical diagnosis
+## Example 1: calculate the net salary of an employee in the UK
 
 ```elixir
-    alias NeuralBridge.{Engine, Rule}
-    engine = Engine.new("doctor_AI")
+rules = [
+  NeuralBridge.Rule.new(
+    id: 1,
+    given: """
+    Person's salary is equal $salary
+    """,
+    then: """
+    let $monthly_salary = div($salary, 12)
+    Person's monthly_salary is $monthly_salary
+    """
+  ),
+  NeuralBridge.Rule.new(
+    id: 2,
+    given: """
+    Person's monthly_salary is equal $monthly_salary
+    """,
+    then: """
+    let $payout = mult($monthly_salary, 0.64)
+    Salary's net_amount is $payout
+    """
+  ),
+  NeuralBridge.Rule.new(
+    id: 2,
+    given: """
+    Salary's net_amount is equal $amount
+    """,
+    then: """
+    Salary's net_amount is $amount
+    """
+  )
+]
 
-    engine =
-      Session.add_rules(engine, [
-        Rule.new(
-          id: 1,
-          given: """
-          Patient's fever is greater 38.5
-          Patient's name is equal $name
-          Patient's generic_weakness is equal "Yes"
-          """,
-          then: """
-          Patient's diagnosis is "flu"
-          """
-        ),
-        Rule.new(
-          id: 2,
-          given: """
-          Patient's fever is lesser 38.5
-          Patient's name is equal $name
-          Patient's generic_weakness is equal "No"
-          """,
-          then: """
-          Patient's diagnosis is "all good"
-          """
-        )
-      ])
+facts = """
+Person's salary is 60000
+Person's employment_type is "Full-time"
+Person's location is "UK"
+"""
 
-    engine =
-      Engine.add_facts(engine, """
-      Patient's fever is 39
-      Patient's name is "Aylon"
-      Patient's generic_weakness is "Yes"
-      """)
-
-    ## contains Patient's diagnnosis
-    [
-      %_{
-        action: [
-          %Retex.Wme{
-            identifier: "Patient",
-            attribute: "diagnosis",
-            value: "flu"
-          }
-        ],
-        bindings: %{"$name" => "Aylon"}
-      }
-    ] = engine.rule_engine.agenda
-
+NeuralBridge.Session.new("uk")
+|> NeuralBridge.Session.add_rules(rules)
+|> NeuralBridge.Session.add_facts(facts)
+|> Map.fetch!(:inferred_facts)
 ```
+
+## Example 2: dynamic pricing
+
+In this example, the rules calculate the discount to be applied to a customer based on the number of items they have bought in a month. The discount percentages are determined as follows:
+
+* If the customer has bought 5 items, the discount percentage is set to 20%.
+* If the customer has bought less than 2 items, the discount percentage is set to 0%.
+* If the customer has bought exactly 3 items, the discount percentage is set to 10%.
+
+```elixir
+rules = [
+  NeuralBridge.Rule.new(
+    id: 1,
+    given: """
+    Customer's number_of_items_bought is equal 5
+    """,
+    then: """
+    Customer's discount_percentage is 0.2
+    """
+  ),
+  NeuralBridge.Rule.new(
+    id: 1,
+    given: """
+    Customer's number_of_items_bought is lesser 2
+    """,
+    then: """
+    Customer's discount_percentage is 0.0
+    """
+  ),
+  NeuralBridge.Rule.new(
+    id: 1,
+    given: """
+    Customer's number_of_items_bought is equal 3
+    """,
+    then: """
+    Customer's discount_percentage is 0.1
+    """
+  )
+]
+
+facts = """
+Customer's number_of_items_bought is 5
+"""
+
+[
+  %Retex.Wme{
+    identifier: "Customer",
+    attribute: "discount_percentage",
+    value: 0.2
+  }
+] =
+  NeuralBridge.Session.new("uk")
+  |> NeuralBridge.Session.add_rules(rules)
+  |> NeuralBridge.Session.add_facts(facts)
+  |> Map.fetch!(:inferred_facts)
+```
+
+## Example 3: loan approval
+
+```elixir
+rules = [
+  NeuralBridge.Rule.new(
+    id: 1,
+    given: """
+    Applicant's credit_score is greater 700
+    """,
+    then: """
+    Loan's approval_status is "approved"
+    """
+  ),
+  NeuralBridge.Rule.new(
+    id: 2,
+    given: """
+    Applicant's credit_score is lesser 500
+    """,
+    then: """
+    Customer's at_risk is true
+    Loan's approval_status is "rejected"
+    """
+  )
+]
+
+facts = """
+Applicant's credit_score is 499
+"""
+
+[
+  %Retex.Wme{
+    identifier: "Customer",
+    attribute: "at_risk",
+    value: true
+  },
+  %Retex.Wme{
+    identifier: "Loan",
+    attribute: "approval_status",
+    value: "rejected"
+  }
+] =
+  NeuralBridge.Session.new("uk")
+  |> NeuralBridge.Session.add_rules(rules)
+  |> NeuralBridge.Session.add_facts(facts)
+  |> Map.fetch!(:inferred_facts)
+```
+
+## Example 3: workflow automation
+
+```elixir
+rules = [
+  NeuralBridge.Rule.new(
+    id: 1,
+    given: """
+    SupportTicket's opening_time_hours greater 24
+    SupportTicket's id is equal $ticke_id
+    """,
+    then: """
+    SupportTicket's escalation_level "high"
+    SupportTicket's escalated is $ticke_id
+    """
+  )
+]
+
+facts = """
+SupportTicket's opening_time_hours is 25
+SupportTicket's id is "123AB_ID"
+"""
+
+[
+  %Retex.Wme{
+    identifier: "SupportTicket",
+    attribute: "escalation_level",
+    value: "high"
+  },
+  %Retex.Wme{
+    identifier: "SupportTicket",
+    attribute: "escalated",
+    value: "123AB_ID"
+  }
+] =
+  NeuralBridge.Session.new("uk")
+  |> NeuralBridge.Session.add_rules(rules)
+  |> NeuralBridge.Session.add_facts(facts)
+  |> Map.fetch!(:inferred_facts)
+```
+
 
 
 This library is just glue for two projects [Retex](https://github.com/lorenzosinisi/retex)

@@ -41,7 +41,7 @@ defmodule NeuralBridge.DefinedFunctions do
   end
 
   def call("mult", [a, b]) do
-    Decimal.mult(Decimal.new("#{a}"), Decimal.new("#{a}"))
+    Decimal.mult(Decimal.new("#{a}"), Decimal.new("#{b}"))
   end
 
   def call("round", [a]) do

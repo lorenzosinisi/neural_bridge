@@ -137,24 +137,24 @@ defmodule NeuralBridge.SessionTest do
     assert [
              %Retex.Wme{
                attribute: "monthly_salary",
-               identifier: "Person",
-               value: 5000.0,
                id: 3_510_723_950,
-               timestamp: nil
+               identifier: "Person",
+               timestamp: nil,
+               value: 5000.0
              },
              %Retex.Wme{
                attribute: "net_amount",
-               identifier: "Salary",
-               value: 25_000_000.0,
                id: 1_705_982_201,
-               timestamp: nil
+               identifier: "Salary",
+               timestamp: nil,
+               value: 3200.0
              },
              %Retex.Wme{
                attribute: "net_amount",
-               identifier: "Salary",
-               value: 25_000_000.0,
                id: 1_238_196_029,
-               timestamp: nil
+               identifier: "Salary",
+               timestamp: nil,
+               value: 3200.0
              }
            ] = Map.fetch!(inference, :inferred_facts)
   end
@@ -221,7 +221,7 @@ defmodule NeuralBridge.SessionTest do
                id: 1_114_257_588,
                identifier: "Result",
                timestamp: nil,
-               value: 3_600_000_000.0
+               value: 720_000.0
              },
              %Retex.Wme{
                attribute: "div_rem_neg",

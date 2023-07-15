@@ -95,14 +95,17 @@ defmodule NeuralBridge.SessionTest do
         let $div_int = div_int($salary, 12)
         let $div_rem = div_rem($salary, 12)
         let $div_rem = div_rem($salary, 12)
+        let $div_rem_neg = div_rem($salary, -12)
         let $is_decimal = is_decimal($salary)
         let $is_decimal = is_decimal(0.5)
         let $min = min(0.5, 0)
         let $round = round(0.5, 10)
         let $round = round(0.5, 0, "half_up")
         let $to_string = to_string(0.5)
+        let $abs = abs(-0.5)
         Result's div is $div
         Result's mult is $mult
+        Result's div_rem_neg is $div_rem_neg
         Result's compare is $compare
         Result's equal is $equal
         Result's div_int is $div_int
@@ -128,80 +131,87 @@ defmodule NeuralBridge.SessionTest do
     assert [
              %Retex.Wme{
                attribute: "div",
-               identifier: "Result",
-               value: 5000.0,
                id: 286_302_541,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 5000.0
              },
              %Retex.Wme{
                attribute: "mult",
-               identifier: "Result",
-               value: 3_600_000_000.0,
                id: 1_114_257_588,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 3_600_000_000.0
+             },
+             %Retex.Wme{
+               attribute: "div_rem_neg",
+               id: 3_615_986_300,
+               identifier: "Result",
+               timestamp: nil,
+               value: -5000.0
              },
              %Retex.Wme{
                attribute: "compare",
-               identifier: "Result",
-               value: :gt,
                id: 2_708_243_500,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: :gt
              },
              %Retex.Wme{
                attribute: "equal",
-               identifier: "Result",
-               value: false,
                id: 3_946_451_889,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: false
              },
              %Retex.Wme{
                attribute: "div_int",
-               identifier: "Result",
-               value: 5000.0,
                id: 1_371_952_866,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 5000.0
              },
              %Retex.Wme{
                attribute: "div_rem",
-               identifier: "Result",
-               value: 5000.0,
                id: 1_404_142_044,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 5000.0
              },
              %Retex.Wme{
                attribute: "is_decimal",
-               identifier: "Result",
-               value: false,
                id: 1_305_437_226,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: false
              },
              %Retex.Wme{
                attribute: "min",
-               identifier: "Result",
-               value: 0,
                id: 3_799_248_231,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 0
              },
              %Retex.Wme{
                attribute: "round",
-               identifier: "Result",
-               value: 0.5,
                id: 1_729_796_609,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 0.5
              },
              %Retex.Wme{
                attribute: "to_string",
-               identifier: "Result",
-               value: "0.5",
                id: 1_899_589_166,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: "0.5"
              },
              %Retex.Wme{
                attribute: "abs",
-               identifier: "Result",
-               value: nil,
                id: 2_853_144_464,
-               timestamp: nil
+               identifier: "Result",
+               timestamp: nil,
+               value: 0.5
              }
            ] = Map.fetch!(inference, :inferred_facts)
   end

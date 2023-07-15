@@ -24,6 +24,25 @@ defmodule NeuralBridge.IntegrationTest do
              "Allowed facts in a given of a rule are: [Retex.Fact.HasAttribute, Retex.Fact.IsNot, Retex.Fact.Isa, Retex.Fact.NotExistingAttribute]"
   end
 
+  test "invalid statement in a rule" do
+    assert_raise NeuralBridge.Rule.Error,
+                 ~r/Error at rule 1 - Invalid statement: Customer's number_of _items_ bought is equal 5/,
+                 fn ->
+                   [
+                     NeuralBridge.Rule.new(
+                       id: 1,
+                       given: """
+                       Customer's number_of _items_ bought is equal 5
+                       Customer's numbe r_of_item s_bought is ciao 5
+                       """,
+                       then: """
+                       Customer's discount_percentage is 0.2
+                       """
+                     )
+                   ]
+                 end
+  end
+
   test "dynamic pricing" do
     rules = [
       NeuralBridge.Rule.new(

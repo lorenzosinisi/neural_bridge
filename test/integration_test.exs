@@ -1,5 +1,47 @@
 defmodule NeuralBridge.IntegrationTest do
   use ExUnit.Case
+  import ExUnit.CaptureLog
+
+  test "returns an error if the given of a rule is invalid" do
+    assert capture_log(fn ->
+             assert_raise NeuralBridge.Rule.Error,
+                          ~r/Invalid statement in the given of the rule id 1 at line 2: Customer's number_of_items_bought is 5/,
+                          fn ->
+                            [
+                              NeuralBridge.Rule.new(
+                                id: 1,
+                                given: """
+                                Customer's number_of_items_bought is equal 5
+                                Customer's number_of_items_bought is 5
+                                """,
+                                then: """
+                                Customer's discount_percentage is 0.2
+                                """
+                              )
+                            ]
+                          end
+           end) =~
+             "Allowed facts in a given of a rule are: [Retex.Fact.HasAttribute, Retex.Fact.IsNot, Retex.Fact.Isa, Retex.Fact.NotExistingAttribute]"
+  end
+
+  test "invalid statement in a rule" do
+    assert_raise NeuralBridge.Rule.Error,
+                 ~r/Error at rule 1 - Invalid statement: Customer's number_of _items_ bought is equal 5/,
+                 fn ->
+                   [
+                     NeuralBridge.Rule.new(
+                       id: 1,
+                       given: """
+                       Customer's number_of _items_ bought is equal 5
+                       Customer's numbe r_of_item s_bought is ciao 5
+                       """,
+                       then: """
+                       Customer's discount_percentage is 0.2
+                       """
+                     )
+                   ]
+                 end
+  end
 
   test "dynamic pricing" do
     rules = [

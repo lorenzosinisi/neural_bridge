@@ -2,7 +2,7 @@
   "combine": {:hex, :combine, "0.10.0", "eff8224eeb56498a2af13011d142c5e7997a80c8f5b97c499f84c841032e429f", [:mix], [], "hexpm", "1b1dbc1790073076580d0d1d64e42eae2366583e7aecd455d1215b0d16f2451b"},
   "decimal": {:hex, :decimal, "2.1.1", "5611dca5d4b2c3dd497dec8f68751f1f1a54755e8ed2a966c2633cf885973ad6", [:mix], [], "hexpm", "53cfe5f497ed0e7771ae1a475575603d77425099ba5faef9394932b35020ffcc"},
   "libgraph": {:hex, :libgraph, "0.16.0", "3936f3eca6ef826e08880230f806bfea13193e49bf153f93edcf0239d4fd1d07", [:mix], [], "hexpm", "41ca92240e8a4138c30a7e06466acc709b0cbb795c643e9e17174a178982d6bf"},
-  "retex": {:git, "https://github.com/lorenzosinisi/retex", "a935a6805f2a0608855399cc80179dc2ed21b82c", []},
+  "retex": {:hex, :retex, "0.1.9", "c019d083b0c5b4f24917e1703ebfa2a39a92ce1c6e12d3f3e790b97583894be1", [:mix], [{:libgraph, "~> 0.16.0", [hex: :libgraph, repo: "hexpm", optional: false]}, {:uuid_tools, "~> 0.1.0", [hex: :uuid_tools, repo: "hexpm", optional: false]}], "hexpm", "55101b72b8f2741dc5c0f079c7fbb13e1de0461fc1478e52a2f1b77080557251"},
   "sanskrit": {:git, "https://github.com/lorenzosinisi/sanskrit", "a6a38887cd3ce8149bdd9d11b29182183e6cd0ae", []},
   "uuid_tools": {:hex, :uuid_tools, "0.1.1", "e94e05551dcfd085a127c11112b0e6d24a98963659bf2f16615745c492e00e38", [:mix], [], "hexpm", "eafa199917316fece589c8768427c0bac6d6959a523482d130f1997a674c0da4"},
 }

@@ -53,7 +53,7 @@ defmodule NeuralBridge.MixProject do
   defp deps do
     [
       {:sanskrit, git: "https://github.com/lorenzosinisi/sanskrit"},
-      {:retex, git: "https://github.com/lorenzosinisi/retex"},
+      {:retex, "~> 0.1.9"},
       {:decimal, "~> 2.0"}
     ]
   end

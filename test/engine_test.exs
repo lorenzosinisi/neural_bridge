@@ -7,7 +7,87 @@ defmodule NeuralBridge.SessionTest do
     assert Session.new("test")
   end
 
-  test "can canculate the net taxaction in the UK" do
+  test "can use inferred rules" do
+    session = Session.new("doctor_AI")
+
+    session =
+      Session.add_rules(session, [
+        Rule.new(
+          id: 1,
+          given: """
+          Patient's fever is greater 38.5
+          Patient's name is equal $name
+          Patient's generic_weakness is equal "Yes"
+          """,
+          then: """
+          Patient's diagnosis is "flu"
+          """
+        ),
+        Rule.new(
+          id: 2,
+          given: """
+          Patient's diagnosis is equal "flu"
+          """,
+          then: """
+          Patient's therapy is "Aspirin"
+          """
+        ),
+        Rule.new(
+          id: 3,
+          given: """
+          Patient's therapy is equal "Aspirin"
+          """,
+          then: """
+          Patient's health_status is "recovered"
+          """
+        )
+      ])
+
+    session =
+      Session.add_facts(session, """
+      Patient's fever is 39
+      Patient's name is "Aylon"
+      Patient's generic_weakness is "Yes"
+      """)
+
+    session = Session.apply_rules(session)
+
+    ## contains Patient's diagnosis
+    assert [
+             %_{
+               action: [
+                 %Retex.Wme{
+                   identifier: "Patient",
+                   attribute: "health_status",
+                   value: "recovered"
+                 }
+               ],
+               bindings: %{}
+             },
+             %_{
+               action: [
+                 %Retex.Wme{
+                   identifier: "Patient",
+                   attribute: "therapy",
+                   value: "Aspirin"
+                 }
+               ],
+               bindings: %{}
+             },
+             %_{
+               action: [
+                 %Retex.Wme{
+                   identifier: "Patient",
+                   attribute: "diagnosis",
+                   value: "flu"
+                 }
+               ],
+               bindings: %{"$name" => "Aylon"}
+             }
+           ] = session.rule_engine.agenda
+  end
+
+  test "can calculate the net taxaction in the UK" do
     rules = [
       Rule.new(
         id: 1,

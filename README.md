@@ -217,7 +217,7 @@ Each time you insert a fact (be it by inference from a rule or a new standalone 
 
 ## What kind of syntax can I use in the given of a rule?
 
-In the given of a rule you can only use comparison statements such as:
+In the "given" of a rule you can only use comparison statements such as:
 
 ```
    Lorenzo's surname is equal "sinisi"
@@ -228,7 +228,7 @@ In the given of a rule you can only use comparison statements such as:
    Dog's age is unknown
 ```
 
-And in a given of a rule you can use insertion statements that translate to WMEs and functions:
+And in a "then" part of a rule you can use insertion statements that translate to WMEs and functions:
 
 ```
    Lorenzo's surname is "sinisi"

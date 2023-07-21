@@ -1,5 +1,7 @@
 # NeuralBridge
 
+Online demo: https://neuralbridge.fly.dev
+
 **A way to mimic human decision making, incredibily fast - An expert system built in Elixir**
 
 "Soon after the dawn of modern computers in the late 1940s – early 1950s, researchers started realizing the immense potential these machines had for modern society. One of the first challenges was to make such machine capable of “thinking” like humans. In particular, making these machines capable of making important decisions the way humans do. The medical / healthcare field presented the tantalizing challenge to enable these machines to make medical diagnostic decisions.

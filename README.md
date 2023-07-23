@@ -501,6 +501,10 @@ be put together to form an expert system in Elixir as shown in the examples abov
 
 If you have any comment or question feel free to open an issue here
 
+### ChatGPT help
+
+You can use the following prompt for ChatGPT to help yourself create rules to input in the system https://gist.github.com/lorenzosinisi/eec245aff37faf57b3a04fbaf655ea20
+
 #### References:
 
 - [Rete algorithm](https://en.wikipedia.org/wiki/Rete_algorithm)

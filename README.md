@@ -2,7 +2,7 @@
 
 Online implementation demo and playground: https://neuralbridge.fly.dev
 
-https://www.loom.com/share/f80bb9ca10e64af1b73456e9c7980bf8
+https://www.loom.com/share/a68821dfdbac4e54b3cfd885cbe4a535?t=619
 
 **A way to mimic human decision making, incredibily fast - An expert system built in Elixir**
 
@@ -11,6 +11,8 @@ https://www.loom.com/share/f80bb9ca10e64af1b73456e9c7980bf8
 Thus, in the late 1950s, right after the information age had fully arrived, researchers started experimenting with the prospect of using computer technology to emulate human decision-making. For example, biomedical researchers started creating computer-aided systems for diagnostic applications in medicine and biology. These early diagnostic systems used patients’ symptoms and laboratory test results as inputs to generate a diagnostic outcome. These systems were often described as the early forms of expert systems." - [Wikipedia](https://en.wikipedia.org/wiki/Expert_system)
 
 ## How does it work?
+
+https://www.loom.com/share/f80bb9ca10e64af1b73456e9c7980bf8
 
 The algorithm utilizes symbols to create an internal representation of the world. Each element in the real world is converted into a triple known as a "Working Memory Element" (`Retex.Wme.t()`), represented as {Entity, attribute, attribute_value}.
 

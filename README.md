@@ -1,6 +1,6 @@
 # NeuralBridge
 
-Online demo: https://neuralbridge.fly.dev
+Online implementation demo and playground: https://neuralbridge.fly.dev
 
 https://www.loom.com/share/f80bb9ca10e64af1b73456e9c7980bf8
 

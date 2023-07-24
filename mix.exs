@@ -36,6 +36,7 @@ defmodule NeuralBridge.MixProject do
     [
       files: ["lib", "mix.exs", "README.md", "LICENSE"],
       maintainers: ["Lorenzo Sinisi"],
+      maintainers: ["Lorenzo Sinisi"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/lorenzosinisi/neural_bridge"}
     ]

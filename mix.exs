@@ -4,7 +4,7 @@ defmodule NeuralBridge.MixProject do
   def project do
     [
       app: :neural_bridge,
-      version: "0.0.1",
+      version: "0.0.2",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       ddocs: [extras: ["README.md"], main: "readme", source_ref: "v0.0.1"],

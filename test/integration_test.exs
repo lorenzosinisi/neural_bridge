@@ -142,11 +142,11 @@ defmodule NeuralBridge.IntegrationTest do
         id: 1,
         given: """
         SupportTicket's opening_time_hours greater 24
-        SupportTicket's id is equal $ticke_id
+        SupportTicket's id is equal $ticket_id
         """,
         then: """
         SupportTicket's escalation_level "high"
-        SupportTicket's escalated is $ticke_id
+        SupportTicket's escalated is $ticket_id
         """
       )
     ]
@@ -169,6 +169,40 @@ defmodule NeuralBridge.IntegrationTest do
              }
            ] =
              NeuralBridge.Session.new("uk")
+             |> NeuralBridge.Session.add_rules(rules)
+             |> NeuralBridge.Session.add_facts(facts)
+             |> Map.fetch!(:inferred_facts)
+  end
+
+  test "recursion bug?" do
+    rules = [
+      NeuralBridge.Rule.new(
+        id: 1,
+        given: """
+        Birth's place is equal "Italy"
+        Birth's place is equal "Albania"
+        Birth's 1975 is greater 10.0
+        """,
+        then: """
+        Birth's nationality is "Italian"
+        """
+      )
+    ]
+
+    facts =
+      """
+      Birth's place is "Italy"
+      Birth's place is "Albania"
+      """ <> Enum.join(Enum.map(0..200, fn value -> "Birth's 1975 is #{value}.0" end), "\n")
+
+    assert [
+             %Retex.Wme{
+               attribute: "nationality",
+               identifier: "Birth",
+               value: "Italian"
+             }
+           ] =
+             NeuralBridge.Session.new("slow session")
              |> NeuralBridge.Session.add_rules(rules)
              |> NeuralBridge.Session.add_facts(facts)
              |> Map.fetch!(:inferred_facts)
